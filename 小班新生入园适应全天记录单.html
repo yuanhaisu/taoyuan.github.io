@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>小班新生入园适应全天记录单</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+        body {
+            font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #e0f7ff 0%, #f5f9ff 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 15px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+        .wechat-header {
+            text-align: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .wechat-header h1 {
+            font-size: 22px;
+            color: #07C160;
+            margin-bottom: 8px;
+        }
+        .wechat-header p {
+            font-size: 14px;
+            color: #888;
+        }
+        .info-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .info-item {
+            flex: 1;
+            min-width: 0;
+        }
+        .info-item label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 14px;
+            color: #555;
+        }
+        .info-item input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            background: #f9f9f9;
+        }
+        .section {
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            border-left: 4px solid #07C160;
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #07C160;
+            display: flex;
+            align-items: center;
+        }
+        .section-title i {
+            margin-right: 10px;
+        }
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            background: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            flex: 1;
+            min-width: 120px;
+        }
+        .checkbox-item input {
+            margin-right: 8px;
+            width: 18px;
+            height: 18px;
+        }
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 15px;
+            margin-top: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            resize: vertical;
+            font-size: 16px;
+            background: #f9f9f9;
+        }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            flex: 1;
+            min-width: 140px;
+        }
+        .btn i {
+            margin-right: 8px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #07C160 0%, #05a855 100%);
+            color: white;
+            box-shadow: 0 4px 10px rgba(7, 193, 96, 0.3);
+        }
+        .btn-secondary {
+            background: linear-gradient(135deg, #10aeff 0%, #0a7de0 100%);
+            color: white;
+            box-shadow: 0 4px 10px rgba(16, 174, 255, 0.3);
+        }
+        .btn-tertiary {
+            background: linear-gradient(135deg, #ff976a 0%, #ff6d4a 100%);
+            color: white;
+            box-shadow: 0 4px 10px rgba(255, 151, 106, 0.3);
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+            display: none;
+        }
+        .required::after {
+            content: " *";
+            color: #ff4757;
+        }
+        .wechat-tips {
+            background: #e6f7ff;
+            border-left: 4px solid #10aeff;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        .wechat-tips h3 {
+            color: #10aeff;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+        .wechat-tips h3 i {
+            margin-right: 8px;
+        }
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+            .section-title {
+                font-size: 16px;
+            }
+            .checkbox-group {
+                flex-direction: column;
+            }
+            .checkbox-item {
+                width: 100%;
+            }
+            .btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .logo img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <!-- 使用base64编码的幼儿园logo -->
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cGF0aCBmaWxsPSIjMDdDMzYwIiBkPSJNMjU2IDhDMTE5IDggOCAxMTkgOCAyNTZzMTExIDI0OCAyNDggMjQ4IDI0OC0xMTEgMjQ4LTI0OFMzOTMgOCAyNTYgOHptMCA0NDhjLTExMC41IDAtMjAwLTg5LjUtMjAwLTIwMFMxNDUuNSA1NiAyNTYgNTZzMjAwIDg5LjUgMjAwIDIwMC04OS41IDIwMC0yMDAgMjAweiIvPjxwYXRoIGZpbGw9IiMxMEFFRkYiIGQ9Ik0zMDQgMjA4YzAgMjAuOS0xNi45IDM4LTM4IDM4aC00NGMtMjEuMSAwLTM4LTE3LjEtMzgtMzhzMTYuOS0zOCAzOC0zOGg0NGMyMS4xIDAgMzggMTcuMSAzOCAzOHptLTUwIDUwaC0yNGMtOC44IDAtMTYgNy4yLTE2IDE2djI0YzAgOC44IDcuMiAxNiAxNiAxNmgyNGM4LjggMCAxNi03LjIgMTYtMTZ2LTI0YzAtOC44LTcuMi0xNi0xNi0xNnptLTc2LTUwYzAgMjAuOS0xNi45IDM4LTM4IDM4aC00NGMtMjEuMSAwLTM4LTE3LjEtMzgtMzhzMTYuOS0zOCAzOC0zOGg0NGMyMS4xIDAgMzggMTcuMSAzOCAzOHptLTI2IDUwaC0yNGMtOC44IDAtMTYgNy4yLTE2IDE2djI0YzAgOC44IDcuMiAxNiAxNiAxNmgyNGM4LjggMCAxNi03LjIgMTYtMTZ2LTI0YzAtOC44LTcuMi0xNi0xNi0xNnoiLz48L3N2Zz4=" alt="幼儿园Logo">
+        </div>
+        
+        <div class="wechat-header">
+            <h1>小班新生入园适应全天记录单</h1>
+            <p>请填写以下信息，完成后点击"提交信息"按钮</p>
+        </div>
+
+        <div class="wechat-tips">
+            <h3><i class="fas fa-info-circle"></i> 微信使用提示</h3>
+            <p>在微信中打开此页面后，点击右上角"..."，选择"收藏"可随时找到此表单，或选择"在浏览器打开"获得更好体验。</p>
+        </div>
+
+        <div class="info-row">
+            <div class="info-item">
+                <label for="child-name" class="required">幼儿姓名：</label>
+                <input type="text" id="child-name" required placeholder="请输入幼儿姓名">
+            </div>
+            <div class="info-item">
+                <label for="recorder" class="required">记录人：</label>
+                <input type="text" id="recorder" required placeholder="请输入记录人姓名">
+            </div>
+        </div>
+
+        <div class="info-row">
+            <div class="info-item">
+                <label for="record-date" class="required">记录日期：</label>
+                <input type="date" id="record-date" required>
+            </div>
+            <div class="info-item">
+                <label for="class">所在班级：</label>
+                <input type="text" id="class" placeholder="请输入班级">
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title"><i class="fas fa-door-open"></i> 入园情况</div>
+            <div class="checkbox-group">
+                <label class="checkbox-item"><input type="checkbox" name="separation" value="不愿分开，追逐"> 不愿分开，追逐</label>
+                <label class="checkbox-item"><input type="checkbox" name="separation" value="哭泣不止"> 哭泣不止</label>
+                <label class="checkbox-item"><input type="checkbox" name="separation" value="情绪良好"> 情绪良好</label>
+            </div>
+            <div style="margin-top: 15px;">
+                <div class="section-title"><i class="fas fa-smile"></i> 在园情绪</div>
+                <div class="checkbox-group">
+                    <label class="checkbox-item"><input type="checkbox" name="mood" value="情绪良好"> 情绪良好</label>
+                    <label class="checkbox-item"><input type="checkbox" name="mood" value="哭了一小会儿"> 哭了一小会儿</label>
+                    <label class="checkbox-item"><input type="checkbox" name="mood" value="刚开始不哭后来哭"> 刚开始不哭后来哭</label>
+                    <label class="checkbox-item"><input type="checkbox" name="mood" value="时而稳定时而哭"> 时而稳定时而哭</label>
+                    <label class="checkbox-item"><input type="checkbox" name="mood" value="哭得比较厉害"> 哭得比较厉害</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title"><i class="fas fa-utensils"></i> 早餐情况</div>
+            <div class="checkbox-group">
+                <label class="checkbox-item"><input type="checkbox" name="breakfast-type" value="自主进餐"> 自主进餐</label>
+                <label class="checkbox-item"><input type="checkbox" name="breakfast-type" value="老师喂"> 老师喂</label>
+                <label class="checkbox-item"><input type="checkbox" name="breakfast-type" value="自己先吃后老师喂"> 自己先吃后老师喂</label>
+                <label class="checkbox-item"><input type="checkbox" name="breakfast-type" value="有挑食现象"> 有挑食现象</label>
+            </div>
+            <div style="margin-top: 15px;">
+                <div class="section-title"><i class="fas fa-utensil-spoon"></i> 进食量</div>
+                <div class="checkbox-group">
+                    <label class="checkbox-item"><input type="checkbox" name="breakfast-amount" value="加量"> 加量</label>
+                    <label class="checkbox-item"><input type="checkbox" name="breakfast-amount" value="基本全吃完"> 基本全吃完</label>
+                    <label class="checkbox-item"><input type="checkbox" name="breakfast-amount" value="吃完大部分"> 吃完大部分</label>
+                    <label class="checkbox-item"><input type="checkbox" name="breakfast-amount" value="吃一半"> 吃一半</label>
+                    <label class="checkbox-item"><input type="checkbox" name="breakfast-amount" value="几乎不吃"> 几乎不吃</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title"><i class="fas fa-bed"></i> 午睡情况</div>
+            <div class="checkbox-group">
+                <label class="checkbox-item"><input type="checkbox" name="nap" value="安静独立入睡"> 安静独立入睡</label>
+                <label class="checkbox-item"><input type="checkbox" name="nap" value="老师安抚入睡"> 老师安抚入睡</label>
+                <label class="checkbox-item"><input type="checkbox" name="nap" value="不愿入睡"> 不愿入睡</label>
+            </div>
+            <div style="margin-top: 15px;">
+                <div class="info-row">
+                    <div class="info-item">
+                        <label for="nap-time">入睡时间：</label>
+                        <input type="time" id="nap-time">
+                    </div>
+                    <div class="info-item">
+                        <label for="wake-time">醒来时间：</label>
+                        <input type="time" id="wake-time">
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top: 15px;">
+                <div class="section-title"><i class="fas fa-info-circle"></i> 午睡详情</div>
+                <div class="checkbox-group">
+                    <label class="checkbox-item"><input type="checkbox" name="nap-details" value="睡姿正确"> 睡姿正确</label>
+                    <label class="checkbox-item"><input type="checkbox" name="nap-details" value="是否尿床"> 是否尿床</label>
+                    <label class="checkbox-item"><input type="checkbox" name="nap-details" value="是否独立穿脱衣物"> 是否独立穿脱衣物</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title"><i class="fas fa-sticky-note"></i> 幼儿一日情况观察总结：</div>
+            <textarea id="summary" placeholder="请输入观察总结..."></textarea>
+        </div>
+
+        <div class="buttons">
+            <button class="btn btn-primary" id="saveBtn"><i class="fas fa-paper-plane"></i> 提交信息</button>
+            <button class="btn btn-secondary" id="printBtn"><i class="fas fa-print"></i> 打印记录</button>
+            <button class="btn btn-tertiary" id="exportBtn"><i class="fas fa-download"></i> 导出数据</button>
+        </div>
+
+        <div class="success-message" id="successMessage">
+            <i class="fas fa-check-circle"></i> 信息提交成功！感谢您的填写。
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 设置默认日期为今天
+            document.getElementById('record-date').valueAsDate = new Date();
+            
+            // 保存按钮事件
+            document.getElementById('saveBtn').addEventListener('click', function() {
+                // 验证必填字段
+                const childName = document.getElementById('child-name').value;
+                const recorder = document.getElementById('recorder').value;
+                const recordDate = document.getElementById('record-date').value;
+                
+                if (!childName || !recorder || !recordDate) {
+                    alert('请填写所有必填字段（标有*的字段）');
+                    return;
+                }
+                
+                // 收集所有数据
+                const formData = {
+                    childName: childName,
+                    recorder: recorder,
+                    recordDate: recordDate,
+                    class: document.getElementById('class').value,
+                    separation: getCheckedValues('separation'),
+                    mood: getCheckedValues('mood'),
+                    breakfastType: getCheckedValues('breakfast-type'),
+                    breakfastAmount: getCheckedValues('breakfast-amount'),
+                    nap: getCheckedValues('nap'),
+                    napTime: document.getElementById('nap-time').value,
+                    wakeTime: document.getElementById('wake-time').value,
+                    napDetails: getCheckedValues('nap-details'),
+                    summary: document.getElementById('summary').value
+                };
+                
+                // 保存到本地存储
+                saveData(formData);
+                
+                // 显示成功消息
+                const successMessage = document.getElementById('successMessage');
+                successMessage.style.display = 'block';
+                
+                // 3秒后隐藏消息
+                setTimeout(function() {
+                    successMessage.style.display = 'none';
+                }, 3000);
+            });
+            
+            // 打印按钮事件
+            document.getElementById('printBtn').addEventListener('click', function() {
+                window.print();
+            });
+            
+            // 导出按钮事件
+            document.getElementById('exportBtn').addEventListener('click', function() {
+                exportData();
+            });
+            
+            // 获取复选框选中的值
+            function getCheckedValues(name) {
+                const checked = [];
+                document.querySelectorAll(`input[name="${name}"]:checked`).forEach(checkbox => {
+                    checked.push(checkbox.value);
+                });
+                return checked;
+            }
+            
+            // 保存数据到本地存储
+            function saveData(data) {
+                // 生成唯一ID
+                const id = Date.now().toString();
+                
+                // 获取现有数据或初始化空对象
+                const allData = JSON.parse(localStorage.getItem('childRecords')) || {};
+                
+                // 添加新数据
+                allData[id] = data;
+                
+                // 保存回本地存储
+                localStorage.setItem('childRecords', JSON.stringify(allData));
+                
+                console.log('数据已保存，ID:', id);
+            }
+            
+            // 导出数据
+            function exportData() {
+                const data = localStorage.getItem('childRecords');
+                if (!data) {
+                    alert('没有数据可导出');
+                    return;
+                }
+                
+                // 创建下载链接
+                const blob = new Blob([data], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = '幼儿记录数据.json';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                alert('数据已导出为JSON文件');
+            }
+        });
+    </script>
+</body>
+</html>
