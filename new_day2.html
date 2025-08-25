@@ -79,7 +79,7 @@
             font-size: 14px;
             color: #555;
         }
-        .info-item input {
+        .info-item input, .info-item select {
             width: 100%;
             padding: 12px 15px;
             border: 1px solid #ddd;
@@ -121,6 +121,26 @@
             min-width: 120px;
         }
         .checkbox-item input {
+            margin-right: 8px;
+            width: 18px;
+            height: 18px;
+        }
+        .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .radio-item {
+            display: flex;
+            align-items: center;
+            background: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            flex: 1;
+            min-width: 120px;
+        }
+        .radio-item input {
             margin-right: 8px;
             width: 18px;
             height: 18px;
@@ -266,10 +286,10 @@
             .section-title {
                 font-size: 16px;
             }
-            .checkbox-group {
+            .checkbox-group, .radio-group {
                 flex-direction: column;
             }
-            .checkbox-item {
+            .checkbox-item, .radio-item {
                 width: 100%;
             }
             .btn {
@@ -318,6 +338,10 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        .toilet-bowel, .water-count-container {
+            margin-top: 15px;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -331,11 +355,6 @@
             <p>请填写以下信息，完成后点击"提交信息"按钮</p>
         </div>
 
-        <div class="storage-info">
-            <h3><i class="fas fa-info-circle"></i> 数据存储说明</h3>
-            <p>当前数据仅保存在浏览器本地，清除缓存或更换设备将导致数据丢失。请及时导出重要数据！</p>
-        </div>
-
         <div class="wechat-tips">
             <h3><i class="fas fa-info-circle"></i> 微信使用提示</h3>
             <p>在微信中打开此页面后，点击右上角"..."，选择"收藏"可随时找到此表单，或选择"在浏览器打开"获得更好体验。</p>
@@ -343,12 +362,28 @@
 
         <div class="info-row">
             <div class="info-item">
-                <label for="child-name" class="required">幼儿姓名：</label>
-                <input type="text" id="child-name" required placeholder="请输入幼儿姓名">
+                <label for="class" class="required">所在班级：</label>
+                <select id="class" required>
+                    <option value="">请选择班级</option>
+                    <option value="新小一">新小一</option>
+                    <option value="新小二">新小二</option>
+                    <option value="小托班">小托班</option>
+                    <option value="中一">中一</option>
+                    <option value="中二">中二</option>
+                    <option value="中三">中三</option>
+                    <option value="大一">大一</option>
+                    <option value="大二">大二</option>
+                    <option value="大三">大三</option>
+                    <option value="KC1">KC1</option>
+                    <option value="KC2">KC2</option>
+                    <option value="KC3">KC3</option>
+                </select>
             </div>
             <div class="info-item">
-                <label for="recorder" class="required">记录人：</label>
-                <input type="text" id="recorder" required placeholder="请输入记录人姓名">
+                <label for="child-name" class="required">幼儿姓名：</label>
+                <select id="child-name" required disabled>
+                    <option value="">请先选择班级</option>
+                </select>
             </div>
         </div>
 
@@ -358,8 +393,7 @@
                 <input type="date" id="record-date" required>
             </div>
             <div class="info-item">
-                <label for="class">所在班级：</label>
-                <input type="text" id="class" placeholder="请输入班级">
+                <!-- 这个位置留空，用于平衡布局 -->
             </div>
         </div>
 
@@ -402,6 +436,85 @@
             </div>
         </div>
 
+        <!-- 新增饮水情况 -->
+        <div class="section">
+            <div class="section-title"><i class="fas fa-tint"></i> 饮水情况</div>
+            <div class="radio-group">
+                <label class="radio-item"><input type="radio" name="water-type" value="自主喝水"> 自主喝水</label>
+                <label class="radio-item"><input type="radio" name="water-type" value="老师喂"> 老师喂</label>
+                <label class="radio-item"><input type="radio" name="water-type" value="拒绝喝水"> 拒绝喝水</label>
+                <label class="radio-item"><input type="radio" name="water-type" value="独立接水" id="water-independent"> 独立接水</label>
+            </div>
+            <div class="water-count-container" id="water-count-container">
+                <div class="info-item" style="margin-top: 10px;">
+                    <label for="water-count">喝水次数：</label>
+                    <select id="water-count">
+                        <option value="1次">1次</option>
+                        <option value="2次">2次</option>
+                        <option value="3次">3次</option>
+                        <option value="4次">4次</option>
+                        <option value="5次以上">5次以上</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title"><i class="fas fa-toilet"></i> 如厕情况</div>
+            <div class="radio-group">
+                <label class="radio-item"><input type="radio" name="toilet-type" value="自主如厕"> 自主如厕</label>
+                <label class="radio-item"><input type="radio" name="toilet-type" value="需要老师协助"> 需要老师协助</label>
+            </div>
+            <div style="margin-top: 15px;">
+                <div class="section-title"><i class="fas fa-poo"></i> 在园有无大便</div>
+                <div class="radio-group">
+                    <label class="radio-item"><input type="radio" name="bowel-movement" value="无" id="bowel-no"> 无</label>
+                    <label class="radio-item"><input type="radio" name="bowel-movement" value="有" id="bowel-yes"> 有</label>
+                </div>
+                <div class="toilet-bowel" id="bowel-count-container">
+                    <div class="info-item" style="margin-top: 10px;">
+                        <label for="bowel-count">大便次数：</label>
+                        <select id="bowel-count">
+                            <option value="1次">1次</option>
+                            <option value="2次">2次</option>
+                            <option value="3次">3次</option>
+                            <option value="3次以上">3次以上</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 新增盥洗情况 -->
+        <div class="section">
+            <div class="section-title"><i class="fas fa-hands-wash"></i> 盥洗情况</div>
+            <div class="checkbox-group">
+                <label class="checkbox-item"><input type="checkbox" name="washing" value="能自主洗手"> 能自主洗手</label>
+                <label class="checkbox-item"><input type="checkbox" name="washing" value="洗手后能用毛巾擦干"> 洗手后能用毛巾擦干</label>
+            </div>
+        </div>
+
+        <!-- 新增午餐情况 -->
+        <div class="section">
+            <div class="section-title"><i class="fas fa-utensils"></i> 午餐情况</div>
+            <div class="checkbox-group">
+                <label class="checkbox-item"><input type="checkbox" name="lunch-type" value="自主进餐"> 自主进餐</label>
+                <label class="checkbox-item"><input type="checkbox" name="lunch-type" value="老师喂"> 老师喂</label>
+                <label class="checkbox-item"><input type="checkbox" name="lunch-type" value="自己先吃后老师喂"> 自己先吃后老师喂</label>
+                <label class="checkbox-item"><input type="checkbox" name="lunch-type" value="有挑食现象"> 有挑食现象</label>
+            </div>
+            <div style="margin-top: 15px;">
+                <div class="section-title"><i class="fas fa-utensil-spoon"></i> 进食量</div>
+                <div class="checkbox-group">
+                    <label class="checkbox-item"><input type="checkbox" name="lunch-amount" value="加量"> 加量</label>
+                    <label class="checkbox-item"><input type="checkbox" name="lunch-amount" value="基本全吃完"> 基本全吃完</label>
+                    <label class="checkbox-item"><input type="checkbox" name="lunch-amount" value="吃完大部分"> 吃完大部分</label>
+                    <label class="checkbox-item"><input type="checkbox" name="lunch-amount" value="吃一半"> 吃一半</label>
+                    <label class="checkbox-item"><input type="checkbox" name="lunch-amount" value="几乎不吃"> 几乎不吃</label>
+                </div>
+            </div>
+        </div>
+
         <div class="section">
             <div class="section-title"><i class="fas fa-bed"></i> 午睡情况</div>
             <div class="checkbox-group">
@@ -412,12 +525,13 @@
             <div style="margin-top: 15px;">
                 <div class="info-row">
                     <div class="info-item">
-                        <label for="nap-time">入睡时间：</label>
-                        <input type="time" id="nap-time">
-                    </div>
-                    <div class="info-item">
-                        <label for="wake-time">醒来时间：</label>
-                        <input type="time" id="wake-time">
+                        <label for="nap-duration">入睡时长：</label>
+                        <select id="nap-duration">
+                            <option value="少于半小时">少于半小时</option>
+                            <option value="半小时到一小时">半小时到一小时</option>
+                            <option value="一小时以上">一小时以上</option>
+                            <option value="两小时以上">两小时以上</option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -431,9 +545,35 @@
             </div>
         </div>
 
+        <!-- 新增午点情况 -->
         <div class="section">
-            <div class="section-title"><i class="fas fa-sticky-note"></i> 幼儿一日情况观察总结：</div>
-            <textarea id="summary" placeholder="请输入观察总结..."></textarea>
+            <div class="section-title"><i class="fas fa-cookie-bite"></i> 午点情况</div>
+            <div class="checkbox-group">
+                <label class="checkbox-item"><input type="checkbox" name="snack-type" value="自主进餐"> 自主进餐</label>
+                <label class="checkbox-item"><input type="checkbox" name="snack-type" value="老师喂"> 老师喂</label>
+                <label class="checkbox-item"><input type="checkbox" name="snack-type" value="自己先吃后老师喂"> 自己先吃后老师喂</label>
+                <label class="checkbox-item"><input type="checkbox" name="snack-type" value="有挑食现象"> 有挑食现象</label>
+            </div>
+            <div style="margin-top: 15px;">
+                <div class="section-title"><i class="fas fa-utensil-spoon"></i> 进食量</div>
+                <div class="checkbox-group">
+                    <label class="checkbox-item"><input type="checkbox" name="snack-amount" value="加量"> 加量</label>
+                    <label class="checkbox-item"><input type="checkbox" name="snack-amount" value="基本全吃完"> 基本全吃完</label>
+                    <label class="checkbox-item"><input type="checkbox" name="snack-amount" value="吃完大部分"> 吃完大部分</label>
+                    <label class="checkbox-item"><input type="checkbox" name="snack-amount" value="吃一半"> 吃一半</label>
+                    <label class="checkbox-item"><input type="checkbox" name="snack-amount" value="几乎不吃"> 几乎不吃</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- 新增游戏活动情况 -->
+        <div class="section">
+            <div class="section-title"><i class="fas fa-gamepad"></i> 游戏活动</div>
+            <div class="radio-group">
+                <label class="radio-item"><input type="radio" name="game-activity" value="独自参与"> 独自参与</label>
+                <label class="radio-item"><input type="radio" name="game-activity" value="与小伙伴共同游戏"> 与小伙伴共同游戏</label>
+                <label class="radio-item"><input type="radio" name="game-activity" value="与小伙伴出现争抢现象"> 与小伙伴出现争抢现象</label>
+            </div>
         </div>
 
         <div class="buttons">
@@ -485,237 +625,155 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // 设置默认日期为今天
-            document.getElementById('record-date').valueAsDate = new Date();
+        // 花名册数据
+        const rosterData = {
+            "新小一": ["吴苓溪", "邹芷木", "喻子芊", "曾一鸿", "向谦", "向彬", "柯宇锡", "雷蕊", "侯今安", "谭子路", "王俊淮", "卜彦博", "熊书屿", "杨筱", "赵依依", "易泽航", "武承宇", "李湉心", "王天航", "凌听夏", "张远琛", "李雨城"],
+            "新小二": ["胡沐瑄", "袁沁瑶", "曾李静汐", "赵晟宇", "易沐宸", "贺歆然", "张思成", "卢诗玥", "刘沐恩", "盛诗贻", "胡政朗", "曾沫琳", "曾佳琳", "杨棣", "米佑", "柳子恩", "王梓沫", "张书婉", "肖橙艺", "刘亦辰", "刘清仪", "张恬", "江易承", "毛朗之", "欧阳叙成", "邓景伊"],
+            "小托班": ["黄梓洺", "王辰烨", "张乐明", "吴景怡", "李雨橦", "卿宇欣", "钟正宸", "肖裕杨", "刘辰扬", "洪初照", "黄甲宸", "邓欢妍", "肖沐宸", "许瑾轩", "张宇轩", "李瑾炎", "周振祺"]
+        };
+
+        // 班级选择事件
+        document.getElementById('class').addEventListener('change', function() {
+            const className = this.value;
+            const childNameSelect = document.getElementById('child-name');
             
-            // 获取DOM元素
-            const successModal = document.getElementById('successModal');
-            const solutionModal = document.getElementById('solutionModal');
-            const modalMessage = document.getElementById('modalMessage');
-            const modalCloseBtn = document.getElementById('modalCloseBtn');
-            const solutionCloseBtn = document.getElementById('solutionCloseBtn');
-            const solutionBtn = document.getElementById('solutionBtn');
+            // 清空现有选项
+            childNameSelect.innerHTML = '';
+            
+            if (className && rosterData[className]) {
+                // 启用下拉框
+                childNameSelect.disabled = false;
+                
+                // 添加默认选项
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.textContent = '请选择幼儿姓名';
+                childNameSelect.appendChild(defaultOption);
+                
+                // 添加班级对应的幼儿姓名
+                rosterData[className].forEach(name => {
+                    const option = document.createElement('option');
+                    option.value = name;
+                    option.textContent = name;
+                    childNameSelect.appendChild(option);
+                });
+            } else {
+                // 如果没有选择班级或班级不存在，禁用下拉框
+                childNameSelect.disabled = true;
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.textContent = '请先选择班级';
+                childNameSelect.appendChild(defaultOption);
+            }
+        });
+
+        // 大便有无选择事件
+        document.getElementById('bowel-yes').addEventListener('change', function() {
+            document.getElementById('bowel-count-container').style.display = this.checked ? 'block' : 'none';
+        });
+        
+        document.getElementById('bowel-no').addEventListener('change', function() {
+            document.getElementById('bowel-count-container').style.display = this.checked ? 'none' : 'block';
+        });
+
+        // 独立接水选择事件
+        document.getElementById('water-independent').addEventListener('change', function() {
+            document.getElementById('water-count-container').style.display = this.checked ? 'block' : 'none';
+        });
+
+        // 设置默认日期为今天
+        document.getElementById('record-date').valueAsDate = new Date();
+
+        // 保存按钮点击事件
+        document.getElementById('saveBtn').addEventListener('click', function() {
+            // 简单验证
+            const className = document.getElementById('class').value;
+            const childName = document.getElementById('child-name').value;
+            const recordDate = document.getElementById('record-date').value;
+            
+            if (!className || !childName || !recordDate) {
+                alert('请填写必填字段（班级、幼儿姓名和记录日期）！');
+                return;
+            }
+            
+            // 收集表单数据
+            const formData = {
+                className: className,
+                childName: childName,
+                recordDate: recordDate,
+                // 这里可以添加更多字段收集逻辑
+                napDuration: document.getElementById('nap-duration').value
+            };
+            
+            // 保存到本地存储
+            const key = `record_${className}_${childName}_${recordDate}`;
+            localStorage.setItem(key, JSON.stringify(formData));
+            
+            // 显示成功消息
+            document.getElementById('modalMessage').textContent = `已成功保存 ${childName} 在 ${recordDate} 的记录。`;
+            document.getElementById('successModal').style.display = 'flex';
+        });
+
+        // 关闭弹窗按钮
+        document.getElementById('modalCloseBtn').addEventListener('click', function() {
+            document.getElementById('successModal').style.display = 'none';
+        });
+
+        // 解决方案按钮
+        document.getElementById('solutionBtn').addEventListener('click', function() {
+            document.getElementById('solutionModal').style.display = 'flex';
+        });
+
+        // 关闭解决方案弹窗
+        document.getElementById('solutionCloseBtn').addEventListener('click', function() {
+            document.getElementById('solutionModal').style.display = 'none';
+        });
+
+        // 打印功能
+        document.getElementById('printBtn').addEventListener('click', function() {
+            window.print();
+        });
+
+        // 导出数据功能
+        document.getElementById('exportBtn').addEventListener('click', function() {
+            // 收集所有相关记录
+            const records = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith('record_')) {
+                    const record = JSON.parse(localStorage.getItem(key));
+                    records.push(record);
+                }
+            }
+            
+            // 创建JSON文件并下载
+            const dataStr = JSON.stringify(records, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = '入园记录.json';
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+        });
+
+        // 保存为图片功能
+        document.getElementById('saveImageBtn').addEventListener('click', function() {
             const loader = document.getElementById('loader');
-            const saveImageBtn = document.getElementById('saveImageBtn');
+            loader.style.display = 'block';
             
-            // 关闭弹窗
-            modalCloseBtn.addEventListener('click', function() {
-                successModal.style.display = 'none';
-            });
-            
-            solutionCloseBtn.addEventListener('click', function() {
-                solutionModal.style.display = 'none';
-            });
-            
-            // 打开解决方案弹窗
-            solutionBtn.addEventListener('click', function() {
-                solutionModal.style.display = 'flex';
-            });
-            
-            // 点击弹窗外部关闭
-            window.addEventListener('click', function(e) {
-                if (e.target === successModal) {
-                    successModal.style.display = 'none';
-                }
-                if (e.target === solutionModal) {
-                    solutionModal.style.display = 'none';
-                }
-            });
-            
-            // 保存按钮事件
-            document.getElementById('saveBtn').addEventListener('click', function() {
-                // 验证必填字段
-                const childName = document.getElementById('child-name').value;
-                const recorder = document.getElementById('recorder').value;
-                const recordDate = document.getElementById('record-date').value;
-                
-                if (!childName || !recorder || !recordDate) {
-                    showModal('提示', '请填写所有必填字段（标有*的字段）', false);
-                    return;
-                }
-                
-                // 收集所有数据
-                const formData = {
-                    childName: childName,
-                    recorder: recorder,
-                    recordDate: recordDate,
-                    class: document.getElementById('class').value,
-                    separation: getCheckedValues('separation'),
-                    mood: getCheckedValues('mood'),
-                    breakfastType: getCheckedValues('breakfast-type'),
-                    breakfastAmount: getCheckedValues('breakfast-amount'),
-                    nap: getCheckedValues('nap'),
-                    napTime: document.getElementById('nap-time').value,
-                    wakeTime: document.getElementById('wake-time').value,
-                    napDetails: getCheckedValues('nap-details'),
-                    summary: document.getElementById('summary').value,
-                    // 添加时间戳
-                    timestamp: new Date().getTime()
-                };
-                
-                // 保存到本地存储
-                saveData(formData);
-                
-                // 显示成功弹窗
-                showModal('提交成功', '信息已成功保存到浏览器本地存储。请及时导出数据备份！', true);
-            });
-            
-            // 打印按钮事件
-            document.getElementById('printBtn').addEventListener('click', function() {
-                window.print();
-            });
-            
-            // 导出按钮事件
-            document.getElementById('exportBtn').addEventListener('click', function() {
-                exportData();
-            });
-            
-            // 保存为图片按钮事件
-            saveImageBtn.addEventListener('click', function() {
-                saveAsImage();
-            });
-            
-            // 显示弹窗函数
-            function showModal(title, message, isSuccess) {
-                document.querySelector('.modal-title').textContent = title;
-                modalMessage.textContent = message;
-                
-                // 根据成功或失败设置图标和颜色
-                const modalIcon = document.querySelector('#successModal .modal-icon i');
-                const modalBtn = document.querySelector('#successModal .modal-btn');
-                
-                if (isSuccess) {
-                    modalIcon.className = 'fas fa-check-circle';
-                    modalIcon.parentElement.style.color = '#07C160';
-                    modalBtn.style.background = '#07C160';
-                } else {
-                    modalIcon.className = 'fas fa-exclamation-circle';
-                    modalIcon.parentElement.style.color = '#ff4757';
-                    modalBtn.style.background = '#ff4757';
-                }
-                
-                successModal.style.display = 'flex';
-            }
-            
-            // 获取复选框选中的值
-            function getCheckedValues(name) {
-                const checked = [];
-                document.querySelectorAll(`input[name="${name}"]:checked`).forEach(checkbox => {
-                    checked.push(checkbox.value);
-                });
-                return checked;
-            }
-            
-            // 保存数据到本地存储
-            function saveData(data) {
-                // 生成唯一ID
-                const id = Date.now().toString();
-                
-                // 获取现有数据或初始化空对象
-                const allData = JSON.parse(localStorage.getItem('childRecords')) || {};
-                
-                // 添加新数据
-                allData[id] = data;
-                
-                // 保存回本地存储
-                localStorage.setItem('childRecords', JSON.stringify(allData));
-                
-                // 更新页面显示的数据量
-                updateDataCount();
-            }
-            
-            // 更新数据量显示
-            function updateDataCount() {
-                const data = localStorage.getItem('childRecords');
-                const count = data ? Object.keys(JSON.parse(data)).length : 0;
-                const storageInfo = document.querySelector('.storage-info p');
-                storageInfo.innerHTML = `当前数据仅保存在浏览器本地，已存储 <strong>${count} 条</strong> 记录。清除缓存或更换设备将导致数据丢失。请及时导出重要数据！`;
-            }
-            
-            // 初始化时更新数据量显示
-            updateDataCount();
-            
-            // 导出数据
-            function exportData() {
-                const data = localStorage.getItem('childRecords');
-                if (!data) {
-                    showModal('提示', '没有数据可导出', false);
-                    return;
-                }
-                
-                // 获取当前表单中的幼儿姓名和班级
-                const childName = document.getElementById('child-name').value || '未知';
-                const className = document.getElementById('class').value || '未知班级';
-                
-                // 生成文件名：幼儿姓名+所在班级+当前时间
-                const now = new Date();
-                const dateStr = `${now.getFullYear()}年${(now.getMonth()+1).toString().padStart(2, '0')}月${now.getDate().toString().padStart(2, '0')}日`;
-                const timeStr = `${now.getHours().toString().padStart(2, '0')}点${now.getMinutes().toString().padStart(2, '0')}分`;
-                const fileName = `${childName}-${className}-${dateStr}-${timeStr}.json`;
-                
-                // 创建下载链接
-                const blob = new Blob([data], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = fileName;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-                
-                showModal('导出成功', `数据已导出为文件：${fileName}。请妥善保存此文件！`, true);
-            }
-            
-            // 保存为图片
-            function saveAsImage() {
-                // 显示加载指示器
-                loader.style.display = 'block';
-                
-                // 获取当前表单中的幼儿姓名和班级
-                const childName = document.getElementById('child-name').value || '未知';
-                const className = document.getElementById('class').value || '未知班级';
-                
-                // 生成文件名：幼儿姓名+所在班级+当前时间
-                const now = new Date();
-                const dateStr = `${now.getFullYear()}年${(now.getMonth()+1).toString().padStart(2, '0')}月${now.getDate().toString().padStart(2, '0')}日`;
-                const timeStr = `${now.getHours().toString().padStart(2, '0')}点${now.getMinutes().toString().padStart(2, '0')}分`;
-                const fileName = `${childName}-${className}-${dateStr}-${timeStr}.png`;
-                
-                // 使用html2canvas捕获表单内容
-                html2canvas(document.getElementById('form-container'), {
-                    scale: 2, // 提高图片质量
-                    useCORS: true,
-                    logging: false,
-                    backgroundColor: '#ffffff'
-                }).then(function(canvas) {
-                    // 隐藏加载指示器
-                    loader.style.display = 'none';
+            setTimeout(function() {
+                html2canvas(document.getElementById('form-container')).then(function(canvas) {
+                    const image = canvas.toDataURL('image/png');
+                    const link = document.createElement('a');
+                    link.href = image;
+                    link.download = '入园记录单.png';
+                    link.click();
                     
-                    try {
-                        // 将canvas转换为图片并下载
-                        const imageData = canvas.toDataURL('image/png');
-                        const link = document.createElement('a');
-                        link.href = imageData;
-                        link.download = fileName;
-                        document.body.appendChild(link);
-                        link.click();
-                        document.body.removeChild(link);
-                        
-                        showModal('保存成功', `表单已成功保存为图片：${fileName}`, true);
-                    } catch (error) {
-                        console.error('保存图片时出错:', error);
-                        showModal('错误', '保存图片时发生错误，请重试或使用其他方式保存。', false);
-                    }
-                }).catch(function(error) {
-                    // 隐藏加载指示器
                     loader.style.display = 'none';
-                    
-                    console.error('生成图片时出错:', error);
-                    showModal('错误', '生成图片时发生错误，请重试或使用其他方式保存。', false);
                 });
-            }
+            }, 500);
         });
     </script>
 </body>
