@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>小班新生入园适应全天记录单</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+        body {
+            font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #e0f7ff 0%, #f5f9ff 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 15px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+        .wechat-header {
+            text-align: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .wechat-header h1 {
+            font-size: 22px;
+            color: #07C160;
+            margin-bottom: 8px;
+        }
+        .wechat-header p {
+            font-size: 14px;
+            color: #888;
+        }
+        .info-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .info-item {
+            flex: 1;
+            min-width: 0;
+        }
+        .info-item label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 14px;
+            color: #555;
+        }
+        .info-item input, .info-item select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            background: #f9f9f9;
+        }
+        .section {
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            border-left: 4px solid #07C160;
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #07C160;
+            display: flex;
+            align-items: center;
+        }
+        .section-title i {
+            margin-right: 10px;
+        }
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            background: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            flex: 1;
+            min-width: 120px;
+        }
+        .checkbox-item input {
+            margin-right: 8px;
+            width: 18px;
+            height: 18px;
+        }
+        .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .radio-item {
+            display: flex;
+            align-items: center;
+            background: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            flex: 1;
+            min-width: 120px;
+        }
+        .radio-item input {
+            margin-right: 8px;
+            width: 18px;
+            height: 18px;
+        }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            flex: 1;
+            min-width: 140px;
+        }
+        .btn i {
+            margin-right: 8px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #07C160 0%, #05a855 100%);
+            color: white;
+            box-shadow: 0 4px 10px rgba(7, 193, 96, 0.3);
+        }
+        .btn-secondary {
+            background: linear-gradient(135deg, #10aeff 0%, #0a7de0 100%);
+            color: white;
+            box-shadow: 0 4px 10px rgba(16, 174, 255, 0.3);
+        }
+        .btn-tertiary {
+            background: linear-gradient(135deg, #ff976a 0%, #ff6d4a 100%);
+            color: white;
+            box-shadow: 0 4px 10px rgba(255, 151, 106, 0.3);
+        }
+        .btn-quaternary {
+            background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);
+            color: white;
+            box-shadow: 0 4px 10px rgba(156, 39, 176, 0.3);
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+        .required::after {
+            content: " *";
+            color: #ff4757;
+        }
+        .wechat-tips {
+            background: #e6f7ff;
+            border-left: 4px solid #10aeff;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        .wechat-tips h3 {
+            color: #10aeff;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+        .wechat-tips h3 i {
+            margin-right: 8px;
+        }
+        /* 弹窗样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+            max-width: 80%;
+            text-align: center;
+        }
+        .modal-icon {
+            font-size: 48px;
+            color: #07C160;
+            margin-bottom: 15px;
+        }
+        .modal-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .modal-message {
+            margin-bottom: 20px;
+            color: #666;
+            line-height: 1.5;
+            text-align: left;
+        }
+        .modal-btn {
+            padding: 10px 20px;
+            background: #07C160;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .solutions-list {
+            margin-top: 15px;
+            padding-left: 20px;
+        }
+        .solutions-list li {
+            margin-bottom: 8px;
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .logo img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        /* 加载指示器 */
+        .loader {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1001;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        .loader-spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #07C160;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .toilet-bowel, .water-count-container {
+            margin-top: 15px;
+            display: none;
+        }
+
+        /* 移动设备优化 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+                display: block;
+            }
+            .container {
+                padding: 15px;
+                max-width: 100%;
+                border-radius: 10px;
+            }
+            .section-title {
+                font-size: 16px;
+            }
+            .checkbox-group, .radio-group {
+                gap: 8px;
+            }
+            .checkbox-item, .radio-item {
+                min-width: calc(50% - 10px);
+                padding: 8px 10px;
+                font-size: 14px;
+            }
+            .info-item input, .info-item select {
+                padding: 10px 12px;
+                font-size: 14px;
+            }
+            .btn {
+                padding: 12px 15px;
+                font-size: 14px;
+                min-width: 120px;
+            }
+            .wechat-header h1 {
+                font-size: 18px;
+            }
+            .modal-content {
+                max-width: 90%;
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .checkbox-item, .radio-item {
+                min-width: 100%;
+            }
+            .buttons {
+                flex-direction: column;
+            }
+            .btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+
+        /* 打印样式优化 */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                border-radius: 0;
+                max-width: 100%;
+            }
+            .buttons, .wechat-tips {
+                display: none;
+            }
+        }
+        
+        /* 图片生成模式 */
+        .image-mode .container {
+            max-width: 800px;
+            padding: 25px;
+        }
+        .image-mode .checkbox-item, 
+        .image-mode .radio-item {
+            min-width: 120px;
+        }
+        .image-mode .section {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="form-container">
+        <div class="logo">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cGF0aCBmaWxsPSIjMDdDMzYwIiBkPSJNMjU2IDhDMTE5IDggOCAxMTkgOCAyNTZzMTExIDI0OCAyNDggMjQ4IDI0OC0xMTEgMjQ4LTI0OFMzOTMgOCAyNTYgOHptMCA0NDhjLTExMC41IDAtMjAwLTg5LjUtMjAwLTIwMFMxNDUuNSA1NiAyNTYgNTZzMjAwIDg5LjUgMjAwIDIwMC04OS41IDIwMC0yMDAgMjAweiIvPjxwYXRoIGZpbGw9IiMxMEFFRkYiIGQ9Ik0zMDQgMjA4YzAgMjAuOS0xNi45IDM4LTM4IDM4aC00NGMtMjEuMSAwLTM4LTE3LjEtMzgtMzhzMTYuOS0zOCAzOC0zOGg0NGMyMS4xIDAgMzggMTcuMSAzOCAzOHptLTUwIDUwaC0yNGMtOC44IDAtMTYgNy4yLTE2IDE2djI0YzAgOC44IDcuMiAxNiAxNiAxNmgyNGM4LjggMCAxNi03LjIgMTYtMTZ2LTI0YzAtOC44LTcuMi0xNi0xNi0xNnptLTc2LTUwYzAgMjAuOS0xNi45IDM4LTM4IDM4aC00NGMtMjEuMSAwLTM4LTE3LjEtMzgtMzhzMTYuOS0zOCAzOC0zOGg0NGMyMS4xIDAgMzggMTcuMSAzOCAzOHptLTI2IDUwaC0yNGMtOC44IDAtMTYgMy4yLTE2IDE2djI0YzAgOC44IDcuMiAxNiAxNiAxNmgyNGM8LjggMCAxNi03LjIgMTYtMTZ2LTI0YzAtOC44LTcuMi0xNi0xNi0xNnoiLz48L3N2Zz4=" alt="幼儿园Logo">
+        </div>
+        
+        <div class="wechat-header">
+            <h1>小班新生入园适应全天记录单</h1>
+            <p>请填写以下信息，完成后点击"提交信息"按钮</p>
+        </div>
+
+        <div class="wechat-tips">
+            <h3><i class="fas fa-info-circle"></i> 微信使用提示</h3>
+            <p>在微信中打开此页面后，点击右上角"..."，选择"收藏"可随时找到此表单，或选择"在浏览器打开"获得更好体验。</p>
+        </div>
+
+        <div class="info-row">
+            <div class="info-item">
+                <label for="class" class="required">所在班级：</label>
+                <select id="class" required>
+                    <option value="">请选择班级</option>
+                    <option value="新小一">新小一</option>
+                    <option value="新小二">新小二</option>
+                    <option value="小托班">小托班</option>
+                </select>
+            </div>
+            <div class="info-item">
+                <label for="child-name" class="required">幼儿姓名：</label>
+                <select id="child-name" required disabled>
+                    <option value="">请先选择班级</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="info-row">
+            <div class="info-item">
+                <label for="record-date" class="required">记录日期：</label>
+                <input type="date" id="record-date" required>
+            </div>
+            <div class="info-item">
+                <!-- 这个位置留空，用于平衡布局 -->
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title"><i class="fas fa-door-open"></i> 入园情况</div>
+            <div class="checkbox-group">
+                <label class="checkbox-item"><input type="checkbox" name="separation" value="不愿分开，追逐"> 不愿分开，追逐</label>
+                <label class="checkbox-item"><input type="checkbox" name="separation" value="哭泣不止"> 哭泣不止</label>
+                <label class="checkbox-item"><input type="checkbox" name="separation" value="情绪良好"> 情绪良好</label>
+            </div>
+            <div style="margin-top: 15px;">
+                <div class="section-title"><i class="fas fa-smile"></i> 在园情绪</div>
+                <div class="checkbox-group">
+                    <label class="checkbox-item"><input type="checkbox" name="mood" value="情绪良好"> 情绪良好</label>
+                    <label class="checkbox-item"><input type="checkbox" name="mood" value="哭了一小会儿"> 哭了一小会儿</label>
+                    <label class="checkbox-item"><input type="checkbox" name="mood" value="刚开始不哭后来哭"> 刚开始不哭后来哭</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title"><i class="fas fa-utensils"></i> 早餐情况</div>
+            <div class="checkbox-group">
+                <label class="checkbox-item"><input type="checkbox" name="breakfast-type" value="自主进餐"> 自主进餐</label>
+                <label class="checkbox-item"><input type="checkbox" name="breakfast-type" value="老师喂"> 老师喂</label>
+                <label class="checkbox-item"><input type="checkbox" name="breakfast-type" value="自己先吃后老师喂"> 自己先吃后老师喂</label>
+            </div>
+            <div style="margin-top: 15px;">
+                <div class="section-title"><i class="fas fa-utensil-spoon"></i> 进食量</div>
+                <div class="checkbox-group">
+                    <label class="checkbox-item"><input type="checkbox" name="breakfast-amount" value="加量"> 加量</label>
+                    <label class="checkbox-item"><input type="checkbox" name="breakfast-amount" value="基本全吃完"> 基本全吃完</label>
+                    <label class="checkbox-item"><input type="checkbox" name="breakfast-amount" value="吃完大部分"> 吃完大部分</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title"><i class="fas fa-tint"></i> 饮水情况</div>
+            <div class="radio-group">
+                <label class="radio-item"><input type="radio" name="water-type" value="自主喝水"> 自主喝水</label>
+                <label class="radio-item"><input type="radio" name="water-type" value="老师喂"> 老师喂</label>
+                <label class="radio-item"><input type="radio" name="water-type" value="拒绝喝水"> 拒绝喝水</label>
+            </div>
+        </div>
+
+        <div class="buttons">
+            <button class="btn btn-primary" id="saveBtn"><i class="fas fa-paper-plane"></i> 提交信息</button>
+            <button class="btn btn-secondary" id="printBtn"><i class="fas fa-print"></i> 打印记录</button>
+            <button class="btn btn-tertiary" id="exportBtn"><i class="fas fa-download"></i> 导出数据</button>
+            <button class="btn btn-quaternary" id="saveImageBtn"><i class="fas fa-camera"></i> 保存为图片</button>
+        </div>
+    </div>
+
+    <!-- 加载指示器 -->
+    <div class="loader" id="loader">
+        <div class="loader-spinner"></div>
+        <p>正在生成图片，请稍候...</p>
+    </div>
+
+    <!-- 弹窗 -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="modal-title">提交成功！</div>
+            <div class="modal-message" id="modalMessage">信息已成功保存到浏览器本地存储。</div>
+            <button class="modal-btn" id="modalCloseBtn">确定</button>
+        </div>
+    </div>
+
+    <script>
+        // 花名册数据
+        const rosterData = {
+            "新小一": ["吴苓溪", "邹芷木", "喻子芊", "曾一鸿", "向谦", "向彬", "柯宇锡", "雷蕊", "侯今安", "谭子路", "王俊淮", "卜彦博", "熊书屿", "杨筱", "赵依依", "易泽航", "武承宇", "李湉心", "王天航", "凌听夏", "张远琛", "李雨城"],
+            "新小二": ["胡沐瑄", "袁沁瑶", "曾李静汐", "赵晟宇", "易沐宸", "贺歆然", "张思成", "卢诗玥", "刘沐恩", "盛诗贻", "胡政朗", "曾沫琳", "曾佳琳", "杨棣", "米佑", "柳子恩", "王梓沫", "张书婉", "肖橙艺", "刘亦辰", "刘清仪", "张恬", "江易承", "毛朗之", "欧阳叙成", "邓景伊"],
+            "小托班": ["黄梓洺", "王辰烨", "张乐明", "吴景怡", "李雨橦", "卿宇欣", "钟正宸", "肖裕杨", "刘辰扬", "洪初照", "黄甲宸", "邓欢妍", "肖沐宸", "许瑾轩", "张宇轩", "李瑾炎", "周振祺"]
+        };
+
+        // 班级选择事件
+        document.getElementById('class').addEventListener('change', function() {
+            const className = this.value;
+            const childNameSelect = document.getElementById('child-name');
+            
+            // 清空现有选项
+            childNameSelect.innerHTML = '';
+            
+            if (className && rosterData[className]) {
+                // 启用下拉框
+                childNameSelect.disabled = false;
+                
+                // 添加默认选项
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.textContent = '请选择幼儿姓名';
+                childNameSelect.appendChild(defaultOption);
+                
+                // 添加班级对应的幼儿姓名
+                rosterData[className].forEach(name => {
+                    const option = document.createElement('option');
+                    option.value = name;
+                    option.textContent = name;
+                    childNameSelect.appendChild(option);
+                });
+            } else {
+                // 如果没有选择班级或班级不存在，禁用下拉框
+                childNameSelect.disabled = true;
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.textContent = '请先选择班级';
+                childNameSelect.appendChild(defaultOption);
+            }
+        });
+
+        // 设置默认日期为今天
+        document.getElementById('record-date').valueAsDate = new Date();
+
+        // 保存按钮点击事件
+        document.getElementById('saveBtn').addEventListener('click', function() {
+            // 简单验证
+            const className = document.getElementById('class').value;
+            const childName = document.getElementById('child-name').value;
+            const recordDate = document.getElementById('record-date').value;
+            
+            if (!className || !childName || !recordDate) {
+                alert('请填写必填字段（班级、幼儿姓名和记录日期）！');
+                return;
+            }
+            
+            // 收集表单数据
+            const formData = {
+                className: className,
+                childName: childName,
+                recordDate: recordDate,
+            };
+            
+            // 保存到本地存储
+            const key = `record_${className}_${childName}_${recordDate}`;
+            localStorage.setItem(key, JSON.stringify(formData));
+            
+            // 显示成功消息
+            document.getElementById('modalMessage').textContent = `已成功保存 ${childName} 在 ${recordDate} 的记录。`;
+            document.getElementById('successModal').style.display = 'flex';
+        });
+
+        // 关闭弹窗按钮
+        document.getElementById('modalCloseBtn').addEventListener('click', function() {
+            document.getElementById('successModal').style.display = 'none';
+        });
+
+        // 打印功能
+        document.getElementById('printBtn').addEventListener('click', function() {
+            window.print();
+        });
+
+        // 导出数据功能
+        document.getElementById('exportBtn').addEventListener('click', function() {
+            // 收集所有相关记录
+            const records = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith('record_')) {
+                    const record = JSON.parse(localStorage.getItem(key));
+                    records.push(record);
+                }
+            }
+            
+            // 创建JSON文件并下载
+            const dataStr = JSON.stringify(records, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = '入园记录.json';
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+        });
+
+        // 保存为图片功能
+        document.getElementById('saveImageBtn').addEventListener('click', function() {
+            const loader = document.getElementById('loader');
+            loader.style.display = 'block';
+            
+            // 添加图片模式类
+            document.body.classList.add('image-mode');
+            
+            setTimeout(function() {
+                html2canvas(document.getElementById('form-container'), {
+                    scale: 2, // 提高图片质量
+                    useCORS: true,
+                    logging: false,
+                    backgroundColor: '#ffffff'
+                }).then(function(canvas) {
+                    const image = canvas.toDataURL('image/png');
+                    const link = document.createElement('a');
+                    link.href = image;
+                    link.download = '入园记录单.png';
+                    link.click();
+                    
+                    loader.style.display = 'none';
+                    // 移除图片模式类
+                    document.body.classList.remove('image-mode');
+                });
+            }, 500);
+        });
+    </script>
+</body>
+</html>
