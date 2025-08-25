@@ -160,15 +160,6 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
         }
-        .success-message {
-            background-color: #d4edda;
-            color: #155724;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 20px;
-            text-align: center;
-            display: none;
-        }
         .required::after {
             content: " *";
             color: #ff4757;
@@ -190,6 +181,51 @@
         .wechat-tips h3 i {
             margin-right: 8px;
         }
+        /* 弹窗样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+            max-width: 80%;
+            text-align: center;
+        }
+        .modal-icon {
+            font-size: 48px;
+            color: #07C160;
+            margin-bottom: 15px;
+        }
+        .modal-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .modal-message {
+            margin-bottom: 20px;
+            color: #666;
+        }
+        .modal-btn {
+            padding: 10px 20px;
+            background: #07C160;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
         @media (max-width: 480px) {
             .container {
                 padding: 15px;
@@ -206,6 +242,10 @@
             .btn {
                 width: 100%;
                 margin-bottom: 10px;
+            }
+            .modal-content {
+                max-width: 90%;
+                padding: 20px;
             }
         }
         .logo {
@@ -337,9 +377,17 @@
             <button class="btn btn-secondary" id="printBtn"><i class="fas fa-print"></i> 打印记录</button>
             <button class="btn btn-tertiary" id="exportBtn"><i class="fas fa-download"></i> 导出数据</button>
         </div>
+    </div>
 
-        <div class="success-message" id="successMessage">
-            <i class="fas fa-check-circle"></i> 信息提交成功！感谢您的填写。
+    <!-- 弹窗 -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="modal-title">提交成功！</div>
+            <div class="modal-message" id="modalMessage">信息已成功保存</div>
+            <button class="modal-btn" id="modalCloseBtn">确定</button>
         </div>
     </div>
 
@@ -347,6 +395,23 @@
         document.addEventListener('DOMContentLoaded', function() {
             // 设置默认日期为今天
             document.getElementById('record-date').valueAsDate = new Date();
+            
+            // 获取DOM元素
+            const successModal = document.getElementById('successModal');
+            const modalMessage = document.getElementById('modalMessage');
+            const modalCloseBtn = document.getElementById('modalCloseBtn');
+            
+            // 关闭弹窗
+            modalCloseBtn.addEventListener('click', function() {
+                successModal.style.display = 'none';
+            });
+            
+            // 点击弹窗外部关闭
+            successModal.addEventListener('click', function(e) {
+                if (e.target === successModal) {
+                    successModal.style.display = 'none';
+                }
+            });
             
             // 保存按钮事件
             document.getElementById('saveBtn').addEventListener('click', function() {
@@ -356,7 +421,7 @@
                 const recordDate = document.getElementById('record-date').value;
                 
                 if (!childName || !recorder || !recordDate) {
-                    alert('请填写所有必填字段（标有*的字段）');
+                    showModal('提示', '请填写所有必填字段（标有*的字段）', false);
                     return;
                 }
                 
@@ -380,14 +445,8 @@
                 // 保存到本地存储
                 saveData(formData);
                 
-                // 显示成功消息
-                const successMessage = document.getElementById('successMessage');
-                successMessage.style.display = 'block';
-                
-                // 3秒后隐藏消息
-                setTimeout(function() {
-                    successMessage.style.display = 'none';
-                }, 3000);
+                // 显示成功弹窗
+                showModal('提交成功', '信息已成功保存！感谢您的填写。', true);
             });
             
             // 打印按钮事件
@@ -399,6 +458,28 @@
             document.getElementById('exportBtn').addEventListener('click', function() {
                 exportData();
             });
+            
+            // 显示弹窗函数
+            function showModal(title, message, isSuccess) {
+                document.querySelector('.modal-title').textContent = title;
+                modalMessage.textContent = message;
+                
+                // 根据成功或失败设置图标和颜色
+                const modalIcon = document.querySelector('.modal-icon i');
+                const modalBtn = document.querySelector('.modal-btn');
+                
+                if (isSuccess) {
+                    modalIcon.className = 'fas fa-check-circle';
+                    modalIcon.parentElement.style.color = '#07C160';
+                    modalBtn.style.background = '#07C160';
+                } else {
+                    modalIcon.className = 'fas fa-exclamation-circle';
+                    modalIcon.parentElement.style.color = '#ff4757';
+                    modalBtn.style.background = '#ff4757';
+                }
+                
+                successModal.style.display = 'flex';
+            }
             
             // 获取复选框选中的值
             function getCheckedValues(name) {
@@ -422,30 +503,38 @@
                 
                 // 保存回本地存储
                 localStorage.setItem('childRecords', JSON.stringify(allData));
-                
-                console.log('数据已保存，ID:', id);
             }
             
             // 导出数据
             function exportData() {
                 const data = localStorage.getItem('childRecords');
                 if (!data) {
-                    alert('没有数据可导出');
+                    showModal('提示', '没有数据可导出', false);
                     return;
                 }
+                
+                // 获取当前表单中的幼儿姓名和班级
+                const childName = document.getElementById('child-name').value || '未知';
+                const className = document.getElementById('class').value || '未知班级';
+                
+                // 生成文件名：幼儿姓名+所在班级+当前时间
+                const now = new Date();
+                const dateStr = `${now.getFullYear()}年${(now.getMonth()+1).toString().padStart(2, '0')}月${now.getDate().toString().padStart(2, '0')}日`;
+                const timeStr = `${now.getHours().toString().padStart(2, '0')}点${now.getMinutes().toString().padStart(2, '0')}分`;
+                const fileName = `${childName}-${className}-${dateStr}-${timeStr}.json`;
                 
                 // 创建下载链接
                 const blob = new Blob([data], { type: 'application/json' });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = '幼儿记录数据.json';
+                a.download = fileName;
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
                 URL.revokeObjectURL(url);
                 
-                alert('数据已导出为JSON文件');
+                showModal('导出成功', `数据已导出为文件：${fileName}`, true);
             }
         });
     </script>
