@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>幼儿在园情况记录 - 家长查看</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f9ff 0%, #e0f7ff 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            min-width: 700px; /* 确保body最小宽度为700px */
+            overflow-x: auto; /* 当屏幕宽度小于700px时显示水平滚动条 */
+        }
+        .container {
+            width: 700px; /* 固定宽度 */
+            min-width: 700px; /* 确保容器最小宽度为700px */
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+            flex-shrink: 0; /* 防止容器被压缩 */
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        .header h1 {
+            font-size: 28px;
+            color: #07C160;
+            margin-bottom: 10px;
+        }
+        .header p {
+            font-size: 16px;
+            color: #666;
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .logo img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .child-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            border-left: 4px solid #07C160;
+        }
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+        .info-label {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 5px;
+        }
+        .info-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+        .section {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            border-left: 4px solid #07C160;
+        }
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #07C160;
+            display: flex;
+            align-items: center;
+        }
+        .section-title i {
+            margin-right: 10px;
+        }
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .detail-item {
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        .detail-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        .detail-value {
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+        }
+        .multi-value {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .value-tag {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 14px;
+        }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            min-width: 180px;
+        }
+        .btn i {
+            margin-right: 8px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #07C160 0%, #05a855 100%);
+            color: white;
+            box-shadow: 0 4px 10px rgba(7, 193, 96, 0.3);
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+        /* 加载指示器 */
+        .loader {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1001;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        .loader-spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #07C160;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+            color: #888;
+            font-size: 14px;
+        }
+        
+        /* 确保在所有设备上都保持700px最小宽度 */
+        @media screen and (max-width: 700px) {
+            body {
+                min-width: 700px;
+                overflow-x: auto;
+            }
+            .container {
+                min-width: 700px;
+                width: 700px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="record-container">
+        <div class="logo">
+            <img src="logo.jpg" alt="幼儿园Logo">
+        </div>
+        
+        <div class="header">
+            <h1>幼儿在园情况记录单</h1>
+            <p>家长查看版 - 记录详情</p>
+        </div>
+
+        <div class="child-info">
+            <div class="info-item">
+                <span class="info-label">幼儿姓名</span>
+                <span class="info-value" id="child-name">肖裕杨</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">所在班级</span>
+                <span class="info-value" id="class">小托班</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">记录日期</span>
+                <span class="info-value" id="record-date">2025-08-26</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title"><i class="fas fa-door-open"></i> 入园情况</div>
+            <div class="detail-grid">
+                <div class="detail-item">
+                    <div class="detail-label">分离情况</div>
+                    <div class="detail-value">
+                        <div class="multi-value" id="separation">
+                            <span class="value-tag">不愿分开，追逐</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">在园情绪</div>
+                    <div class="detail-value">
+                        <div class="multi-value" id="mood">
+                            <span class="value-tag">哭了一小会儿</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title"><i class="fas fa-utensils"></i> 餐饮情况</div>
+            <div class="detail-grid">
+                <div class="detail-item">
+                    <div class="detail-label">早餐类型</div>
+                    <div class="detail-value">
+                        <div class="multi-value" id="breakfast-type">
+                            <span class="value-tag">老师喂</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">早餐食量</div>
+                    <div class="detail-value">
+                        <div class="multi-value" id="breakfast-amount">
+                            <span class="value-tag">吃完大部分</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">午餐类型</div>
+                    <div class="detail-value">
+                        <div class="multi-value" id="lunch-type">
+                            <span class="value-tag">自己先吃后老师喂</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">午餐食量</div>
+                    <div class="detail-value">
+                        <div class="multi-value" id="lunch-amount">
+                            <span class="value-tag">吃完大部分</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">午点类型</div>
+                    <div class="detail-value">
+                        <div class="multi-value" id="snack-type">
+                            <span class="value-tag">自己先吃后老师喂</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">午点食量</div>
+                    <div class="detail-value">
+                        <div class="multi-value" id="snack-amount">
+                            <span class="value-tag">吃完大部分</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title"><i class="fas fa-tint"></i> 饮水情况</div>
+            <div class="detail-grid">
+                <div class="detail-item">
+                    <div class="detail-label">饮水方式</div>
+                    <div class="detail-value" id="water-type">拒绝喝水</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">喝水次数</div>
+                    <div class="detail-value" id="water-count">1次</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title"><i class="fas fa-toilet"></i> 如厕情况</div>
+            <div class="detail-grid">
+                <div class="detail-item">
+                    <div class="detail-label">如厕方式</div>
+                    <div class="detail-value" id="toilet-type">需要老师协助</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">有无大便</div>
+                    <div class="detail-value" id="bowel-movement">无</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">大便次数</div>
+                    <div class="detail-value" id="bowel-count">1次</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">盥洗情况</div>
+                    <div class="detail-value">
+                        <div class="multi-value" id="washing">
+                            <span class="value-tag">能自主洗手</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title"><i class="fas fa-bed"></i> 午睡情况</div>
+            <div class="detail-grid">
+                <div class="detail-item">
+                    <div class="detail-label">午睡情况</div>
+                    <div class="detail-value">
+                        <div class="multi-value" id="nap">
+                            <span class="value-tag">老师安抚入睡</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">入睡时长</div>
+                    <div class="detail-value" id="nap-duration">少于半小时</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">午睡详情</div>
+                    <div class="detail-value">
+                        <div class="multi-value" id="nap-details">
+                            <span class="value-tag">是否独立穿脱衣物</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title"><i class="fas fa-gamepad"></i> 游戏活动</div>
+            <div class="detail-item">
+                <div class="detail-label">活动参与情况</div>
+                <div class="detail-value" id="game-activity">独自参与</div>
+            </div>
+        </div>
+
+        <div class="buttons">
+            <button class="btn btn-primary" id="saveImageBtn"><i class="fas fa-camera"></i> 保存为图片</button>
+        </div>
+
+        <div class="footer">
+            <p>© 2025 幼儿园管理系统 | 记录生成时间: <span id="generate-time"></span></p>
+        </div>
+    </div>
+
+    <!-- 加载指示器 -->
+    <div class="loader" id="loader">
+        <div class="loader-spinner"></div>
+        <p>正在生成图片，请稍候...</p>
+    </div>
+
+    <script>
+        // 设置生成时间
+        document.getElementById('generate-time').textContent = new Date().toLocaleString();
+        
+        // 示例数据 - 实际应用中应从JSON文件或服务器获取
+        const sampleData = {
+            "class": "小托班",
+            "childName": "肖裕杨",
+            "recordDate": "2025-08-26",
+            "separation": ["不愿分开，追逐"],
+            "mood": ["哭了一小会儿"],
+            "breakfastType": ["老师喂"],
+            "breakfastAmount": ["吃完大部分"],
+            "waterType": "拒绝喝水",
+            "waterCount": "1次",
+            "toiletType": "需要老师协助",
+            "bowelMovement": "无",
+            "bowelCount": "1次",
+            "washing": ["能自主洗手"],
+            "lunchType": ["自己先吃后老师喂"],
+            "lunchAmount": ["吃完大部分"],
+            "nap": ["老师安抚入睡"],
+            "napDuration": "少于半小时",
+            "napDetails": ["是否独立穿脱衣物"],
+            "snackType": ["自己先吃后老师喂"],
+            "snackAmount": ["吃完大部分"],
+            "gameActivity": "独自参与"
+        };
+
+        // 加载数据到页面
+        function loadDataToPage(data) {
+            // 基本信息
+            document.getElementById('child-name').textContent = data.childName;
+            document.getElementById('class').textContent = data.class;
+            document.getElementById('record-date').textContent = data.recordDate;
+            
+            // 入园情况
+            populateMultiValue('separation', data.separation);
+            populateMultiValue('mood', data.mood);
+            
+            // 餐饮情况
+            populateMultiValue('breakfast-type', data.breakfastType);
+            populateMultiValue('breakfast-amount', data.breakfastAmount);
+            populateMultiValue('lunch-type', data.lunchType);
+            populateMultiValue('lunch-amount', data.lunchAmount);
+            populateMultiValue('snack-type', data.snackType);
+            populateMultiValue('snack-amount', data.snackAmount);
+            
+            // 饮水情况
+            document.getElementById('water-type').textContent = data.waterType;
+            document.getElementById('water-count').textContent = data.waterCount;
+            
+            // 如厕情况
+            document.getElementById('toilet-type').textContent = data.toiletType;
+            document.getElementById('bowel-movement').textContent = data.bowelMovement;
+            document.getElementById('bowel-count').textContent = data.bowelCount;
+            populateMultiValue('washing', data.washing);
+            
+            // 午睡情况
+            populateMultiValue('nap', data.nap);
+            document.getElementById('nap-duration').textContent = data.napDuration;
+            populateMultiValue('nap-details', data.napDetails);
+            
+            // 游戏活动
+            document.getElementById('game-activity').textContent = data.gameActivity;
+        }
+
+        // 辅助函数：填充多值数据
+        function populateMultiValue(elementId, values) {
+            const container = document.getElementById(elementId);
+            container.innerHTML = ''; // 清空现有内容
+            
+            if (values && values.length > 0) {
+                values.forEach(value => {
+                    const tag = document.createElement('span');
+                    tag.className = 'value-tag';
+                    tag.textContent = value;
+                    container.appendChild(tag);
+                });
+            } else {
+                container.innerHTML = '<span class="value-tag">无记录</span>';
+            }
+        }
+
+        // 保存为图片按钮事件
+        document.getElementById('saveImageBtn').addEventListener('click', function() {
+            // 显示加载指示器
+            document.getElementById('loader').style.display = 'block';
+            
+            // 使用html2canvas将表单转换为图片
+            html2canvas(document.getElementById('record-container')).then(function(canvas) {
+                // 创建图片链接
+                const imgData = canvas.toDataURL('image/png');
+                
+                // 创建下载链接
+                const link = document.createElement('a');
+                link.href = imgData;
+                link.download = `幼儿记录_${document.getElementById('child-name').textContent}_${document.getElementById('record-date').textContent}.png`;
+                
+                // 模拟点击下载
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                // 隐藏加载指示器
+                document.getElementById('loader').style.display = 'none';
+            });
+        });
+
+        // 页面加载时初始化数据
+        document.addEventListener('DOMContentLoaded', function() {
+            const recordId = new URLSearchParams(window.location.search).get('id');
+            if (!recordId) {
+                alert('缺少记录标识符');
+                return;
+            }
+
+            try {
+                const recordData = localStorage.getItem(recordId);
+                if (!recordData) {
+                    alert('记录不存在或已过期');
+                    return;
+                }
+
+                const data = JSON.parse(recordData);
+                
+                // 渲染数据
+                document.getElementById('child-name').textContent = data.childName;
+                document.getElementById('class').textContent = data.class;
+                document.getElementById('record-date').textContent = data.recordDate;
+                
+                // 渲染多选数据
+                function renderMultiValue(elementId, values) {
+                    const container = document.getElementById(elementId);
+                    container.innerHTML = '';
+                    if (values && values.length > 0) {
+                        values.forEach(value => {
+                            const tag = document.createElement('span');
+                            tag.className = 'value-tag';
+                            tag.textContent = value;
+                            container.appendChild(tag);
+                        });
+                    } else {
+                        container.innerHTML = '<span class="value-tag">无记录</span>';
+                    }
+                }
+                
+                // 渲染各字段数据
+                renderMultiValue('separation', data.separation);
+                renderMultiValue('mood', data.mood);
+                renderMultiValue('breakfast-type', data.breakfastType);
+                renderMultiValue('breakfast-amount', data.breakfastAmount);
+                document.getElementById('water-type').textContent = data.waterType || '无记录';
+                document.getElementById('water-count').textContent = data.waterCount || '无记录';
+                document.getElementById('toilet-type').textContent = data.toiletType || '无记录';
+                document.getElementById('bowel-movement').textContent = data.bowelMovement || '无记录';
+                document.getElementById('bowel-count').textContent = data.bowelCount || '无记录';
+                renderMultiValue('washing', data.washing);
+                renderMultiValue('lunch-type', data.lunchType);
+                renderMultiValue('lunch-amount', data.lunchAmount);
+                renderMultiValue('nap', data.nap);
+                document.getElementById('nap-duration').textContent = data.napDuration || '无记录';
+                renderMultiValue('nap-details', data.napDetails);
+                renderMultiValue('snack-type', data.snackType);
+                renderMultiValue('snack-amount', data.snackAmount);
+                document.getElementById('game-activity').textContent = data.gameActivity || '无记录';
+                
+                // 自动生成图片
+                setTimeout(() => {
+                    const loader = document.getElementById('loader');
+                    loader.style.display = 'block';
+                    
+                    html2canvas(document.getElementById('record-container')).then(canvas => {
+                        const link = document.createElement('a');
+                        link.href = canvas.toDataURL('image/png');
+                        link.download = `幼儿记录_${data.childName}_${data.recordDate}.png`;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        
+                        // 可选：清理数据
+                        // localStorage.removeItem(recordId);
+                        
+                        loader.style.display = 'none';
+                    });
+                }, 2000);
+                
+            } catch (e) {
+                console.error('数据处理失败:', e);
+                alert('记录数据异常');
+            }
+        });
+    </script>
+</body>
+</html>

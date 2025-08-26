@@ -1,0 +1,92 @@
+[
+  {
+    "class": "小托班",
+    "childName": "肖裕杨",
+    "recordDate": "2025-08-26",
+    "separation": [
+      "不愿分开，追逐"
+    ],
+    "mood": [
+      "哭了一小会儿"
+    ],
+    "breakfastType": [
+      "老师喂"
+    ],
+    "breakfastAmount": [
+      "吃完大部分"
+    ],
+    "waterType": "拒绝喝水",
+    "waterCount": "1次",
+    "toiletType": "需要老师协助",
+    "bowelMovement": "无",
+    "bowelCount": "1次",
+    "washing": [
+      "能自主洗手"
+    ],
+    "lunchType": [
+      "自己先吃后老师喂"
+    ],
+    "lunchAmount": [
+      "吃完大部分"
+    ],
+    "nap": [
+      "老师安抚入睡"
+    ],
+    "napDuration": "少于半小时",
+    "napDetails": [
+      "是否独立穿脱衣物"
+    ],
+    "snackType": [
+      "自己先吃后老师喂"
+    ],
+    "snackAmount": [
+      "吃完大部分"
+    ],
+    "gameActivity": "独自参与"
+  },
+  {
+    "class": "新小一",
+    "childName": "柯宇锡",
+    "recordDate": "2025-08-25",
+    "separation": [
+      "不愿分开，追逐"
+    ],
+    "mood": [
+      "情绪良好"
+    ],
+    "breakfastType": [
+      "自主进餐"
+    ],
+    "breakfastAmount": [
+      "吃完大部分"
+    ],
+    "waterType": "老师喂",
+    "waterCount": "1次",
+    "toiletType": "需要老师协助",
+    "bowelMovement": "无",
+    "bowelCount": "1次",
+    "washing": [
+      "能自主洗手"
+    ],
+    "lunchType": [
+      "老师喂"
+    ],
+    "lunchAmount": [
+      "吃完大部分"
+    ],
+    "nap": [
+      "老师安抚入睡"
+    ],
+    "napDuration": "少于半小时",
+    "napDetails": [
+      "睡姿正确"
+    ],
+    "snackType": [
+      "自主进餐"
+    ],
+    "snackAmount": [
+      "基本全吃完"
+    ],
+    "gameActivity": "独自参与"
+  }
+]
