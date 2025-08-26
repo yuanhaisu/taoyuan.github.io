@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>幼儿在园情况记录 - 家长查看</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <style>
         * {
@@ -12,161 +12,337 @@
             margin: 0;
             padding: 0;
         }
+        
         body {
             font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #f5f9ff 0%, #e0f7ff 100%);
-            color: #333;
+            background: linear-gradient(135deg, #ffeef8 0%, #f0f8ff 25%, #fff8f0 50%, #f8fff0 75%, #fff0f8 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            color: #4a4a4a;
             line-height: 1.6;
             padding: 20px;
             display: flex;
             justify-content: center;
             align-items: flex-start;
             min-height: 100vh;
-            min-width: 700px; /* 确保body最小宽度为700px */
-            overflow-x: auto; /* 当屏幕宽度小于700px时显示水平滚动条 */
+            min-width: 700px;
+            overflow-x: auto;
+            position: relative;
         }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* 添加可爱的背景装饰 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(255, 182, 193, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 30%, rgba(173, 216, 230, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 70%, rgba(255, 218, 185, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 90% 80%, rgba(221, 160, 221, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+        
         .container {
-            width: 700px; /* 固定宽度 */
-            min-width: 700px; /* 确保容器最小宽度为700px */
+            width: 700px;
+            min-width: 700px;
             margin: 0 auto;
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
             padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
-            flex-shrink: 0; /* 防止容器被压缩 */
+            border-radius: 25px;
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.1),
+                0 0 0 1px rgba(255, 255, 255, 0.2);
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #ff9a9e, #fecfef, #fecfef, #ff9a9e);
+            border-radius: 25px 25px 0 0;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 25px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #e0e0e0;
+            margin-bottom: 30px;
+            padding-bottom: 25px;
+            border-bottom: 3px solid #f0f0f0;
+            position: relative;
         }
+        
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #ff9a9e, #fecfef);
+            border-radius: 2px;
+        }
+        
         .header h1 {
-            font-size: 28px;
-            color: #07C160;
+            font-size: 32px;
+            background: linear-gradient(135deg, #ff9a9e, #fecfef);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 10px;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
+        
         .header p {
             font-size: 16px;
-            color: #666;
+            color: #888;
+            font-weight: 500;
         }
+        
         .logo {
             text-align: center;
-            margin-bottom: 20px;
-        }
-        .logo img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-        .child-info {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: #f9f9f9;
-            border-radius: 10px;
-            border-left: 4px solid #07C160;
-        }
-        .info-item {
-            display: flex;
-            flex-direction: column;
-        }
-        .info-label {
-            font-size: 14px;
-            color: #888;
-            margin-bottom: 5px;
-        }
-        .info-value {
-            font-size: 18px;
-            font-weight: bold;
-            color: #333;
-        }
-        .section {
             margin-bottom: 25px;
-            padding: 20px;
-            background: #f9f9f9;
-            border-radius: 10px;
-            border-left: 4px solid #07C160;
+            margin-top: 150px;
         }
-        .section-title {
+        
+        .logo img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            box-shadow: 
+                0 8px 25px rgba(0, 0, 0, 0.15),
+                0 0 0 8px rgba(255, 255, 255, 0.8);
+            border: 4px solid #fff;
+            transition: transform 0.3s ease;
+        }
+        
+        .logo img:hover {
+            transform: scale(1.05);
+        }
+        
+        .child-info {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 35px;
+            padding: 25px;
+            background: linear-gradient(135deg, #f8f9ff 0%, #fff8f9 100%);
+            border-radius: 20px;
+            border: 2px solid #f0f0f0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .child-info::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff9a9e, #fecfef, #a8edea);
+        }
+        
+        .info-item {
+            text-align: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+        
+        .info-item:hover {
+            transform: translateY(-3px);
+        }
+        
+        .info-label {
+            font-size: 13px;
+            color: #999;
+            margin-bottom: 8px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .info-value {
             font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            color: #07C160;
+            font-weight: 700;
+            color: #4a4a4a;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .section {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, #fafbff 0%, #fffafb 100%);
+            border-radius: 20px;
+            border: 2px solid #f0f0f0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(180deg, #ff9a9e, #fecfef, #a8edea);
+        }
+        
+        .section-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #4a4a4a;
             display: flex;
             align-items: center;
+            gap: 12px;
         }
+        
         .section-title i {
-            margin-right: 10px;
+            font-size: 24px;
+            background: linear-gradient(135deg, #ff9a9e, #fecfef);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
+        
         .detail-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
         }
+        
         .detail-item {
-            padding: 12px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            padding: 18px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #f0f0f0;
+            transition: all 0.3s ease;
         }
+        
+        .detail-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
         .detail-label {
             font-size: 14px;
-            color: #666;
-            margin-bottom: 5px;
+            color: #888;
+            margin-bottom: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
+        
         .detail-value {
             font-size: 16px;
-            font-weight: 500;
-            color: #333;
+            font-weight: 600;
+            color: #4a4a4a;
+            line-height: 1.5;
         }
+        
         .multi-value {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
         }
+        
         .value-tag {
-            background: #e8f5e9;
-            color: #2e7d32;
-            padding: 4px 10px;
-            border-radius: 15px;
-            font-size: 14px;
+            background: linear-gradient(135deg, #ff9a9e, #fecfef);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(255, 154, 158, 0.3);
+            transition: all 0.3s ease;
         }
+        
+        .value-tag:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(255, 154, 158, 0.4);
+        }
+        
         .buttons {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin-top: 30px;
+            gap: 20px;
+            margin-top: 40px;
         }
+        
         .btn {
-            padding: 12px 20px;
+            padding: 15px 30px;
             border: none;
-            border-radius: 8px;
+            border-radius: 25px;
             cursor: pointer;
             font-size: 16px;
-            font-weight: bold;
+            font-weight: 700;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s;
-            min-width: 180px;
+            gap: 10px;
+            transition: all 0.3s ease;
+            min-width: 200px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
         }
-        .btn i {
-            margin-right: 8px;
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
         }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
         .btn-primary {
-            background: linear-gradient(135deg, #07C160 0%, #05a855 100%);
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
             color: white;
-            box-shadow: 0 4px 10px rgba(7, 193, 96, 0.3);
+            box-shadow: 0 8px 25px rgba(255, 154, 158, 0.4);
         }
+        
         .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(255, 154, 158, 0.5);
         }
-        /* 加载指示器 */
+        
+        .btn i {
+            font-size: 18px;
+        }
+        
         .loader {
             display: none;
             position: fixed;
@@ -174,35 +350,42 @@
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 1001;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.95);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             text-align: center;
+            border: 2px solid #f0f0f0;
         }
+        
         .loader-spinner {
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #07C160;
-            border-radius: 50%;
             width: 50px;
             height: 50px;
+            border: 4px solid #f0f0f0;
+            border-top: 4px solid #ff9a9e;
+            border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
+            margin: 0 auto 20px;
         }
+        
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        
         .footer {
             text-align: center;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #e0e0e0;
-            color: #888;
+            margin-top: 40px;
+            padding-top: 25px;
+            border-top: 2px solid #f0f0f0;
+            color: #999;
             font-size: 14px;
+            font-weight: 500;
         }
         
-        /* 确保在所有设备上都保持700px最小宽度 */
+        /* 响应式设计 */
         @media screen and (max-width: 700px) {
             body {
                 min-width: 700px;
@@ -213,6 +396,25 @@
                 width: 700px;
             }
         }
+        
+        /* 添加可爱的动画效果 */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .logo img {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        /* 添加彩虹边框效果 */
+        .section:nth-child(odd)::before {
+            background: linear-gradient(180deg, #ff9a9e, #fecfef);
+        }
+        
+        .section:nth-child(even)::before {
+            background: linear-gradient(180deg, #a8edea, #fed6e3);
+        }
     </style>
 </head>
 <body>
@@ -222,27 +424,27 @@
         </div>
         
         <div class="header">
-            <h1>幼儿在园情况记录单</h1>
-            <p>家长查看版 - 记录详情</p>
+            <h1>🌟 幼儿在园情况记录单 🌟</h1>
+            <p>💕 家长查看版 - 记录详情 💕</p>
         </div>
 
         <div class="child-info">
             <div class="info-item">
-                <span class="info-label">幼儿姓名</span>
+                <span class="info-label">👶 幼儿姓名</span>
                 <span class="info-value" id="child-name">肖裕杨</span>
             </div>
             <div class="info-item">
-                <span class="info-label">所在班级</span>
+                <span class="info-label">🏫 所在班级</span>
                 <span class="info-value" id="class">小托班</span>
             </div>
             <div class="info-item">
-                <span class="info-label">记录日期</span>
+                <span class="info-label">📅 记录日期</span>
                 <span class="info-value" id="record-date">2025-08-26</span>
             </div>
         </div>
 
         <div class="section">
-            <div class="section-title"><i class="fas fa-door-open"></i> 入园情况</div>
+            <div class="section-title"><i class="fas fa-door-open"></i> 🏠 入园情况</div>
             <div class="detail-grid">
                 <div class="detail-item">
                     <div class="detail-label">分离情况</div>
@@ -264,7 +466,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title"><i class="fas fa-utensils"></i> 餐饮情况</div>
+            <div class="section-title"><i class="fas fa-utensils"></i> 🍽️ 餐饮情况</div>
             <div class="detail-grid">
                 <div class="detail-item">
                     <div class="detail-label">早餐类型</div>
@@ -318,7 +520,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title"><i class="fas fa-tint"></i> 饮水情况</div>
+            <div class="section-title"><i class="fas fa-tint"></i> 💧 饮水情况</div>
             <div class="detail-grid">
                 <div class="detail-item">
                     <div class="detail-label">饮水方式</div>
@@ -332,7 +534,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title"><i class="fas fa-toilet"></i> 如厕情况</div>
+            <div class="section-title"><i class="fas fa-toilet"></i> 🚽 如厕情况</div>
             <div class="detail-grid">
                 <div class="detail-item">
                     <div class="detail-label">如厕方式</div>
@@ -358,7 +560,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title"><i class="fas fa-bed"></i> 午睡情况</div>
+            <div class="section-title"><i class="fas fa-bed"></i> 😴 午睡情况</div>
             <div class="detail-grid">
                 <div class="detail-item">
                     <div class="detail-label">午睡情况</div>
@@ -384,7 +586,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title"><i class="fas fa-gamepad"></i> 游戏活动</div>
+            <div class="section-title"><i class="fas fa-gamepad"></i> 🎮 游戏活动</div>
             <div class="detail-item">
                 <div class="detail-label">活动参与情况</div>
                 <div class="detail-value" id="game-activity">独自参与</div>
@@ -392,18 +594,18 @@
         </div>
 
         <div class="buttons">
-            <button class="btn btn-primary" id="saveImageBtn"><i class="fas fa-camera"></i> 保存为图片</button>
+            <button class="btn btn-primary" id="saveImageBtn"><i class="fas fa-camera"></i> 📸 保存为图片</button>
         </div>
 
         <div class="footer">
-            <p>© 2025 幼儿园管理系统 | 记录生成时间: <span id="generate-time"></span></p>
+            <p>💖 © 2025 幼儿园管理系统 | 记录生成时间: <span id="generate-time"></span> 💖</p>
         </div>
     </div>
 
     <!-- 加载指示器 -->
     <div class="loader" id="loader">
         <div class="loader-spinner"></div>
-        <p>正在生成图片，请稍候...</p>
+        <p>🎨 正在生成图片，请稍候...</p>
     </div>
 
     <script>
