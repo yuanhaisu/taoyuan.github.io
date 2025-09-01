@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>幼儿在园情况记录 - 家长查看</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <style>
         * {
@@ -420,7 +420,7 @@
 <body>
     <div class="container" id="record-container">
         <div class="logo">
-            <img src="logo.jpg" alt="幼儿园Logo">
+            <img src="logo.jpg" alt="幼儿园Logo" crossorigin="anonymous">
         </div>
         
         <div class="header">
@@ -443,30 +443,10 @@
             </div>
         </div>
 
-        <div class="section">
-            <div class="section-title"><i class="fas fa-door-open"></i> 🏠 入园情况</div>
-            <div class="detail-grid">
-                <div class="detail-item">
-                    <div class="detail-label">分离情况</div>
-                    <div class="detail-value">
-                        <div class="multi-value" id="separation">
-                            <span class="value-tag">不愿分开，追逐</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">在园情绪</div>
-                    <div class="detail-value">
-                        <div class="multi-value" id="mood">
-                            <span class="value-tag">哭了一小会儿</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
 
         <div class="section">
-            <div class="section-title"><i class="fas fa-utensils"></i> 🍽️ 餐饮情况</div>
+            <div class="section-title">🍽️ 餐饮情况</div>
             <div class="detail-grid">
                 <div class="detail-item">
                     <div class="detail-label">早餐类型</div>
@@ -520,7 +500,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title"><i class="fas fa-tint"></i> 💧 饮水情况</div>
+            <div class="section-title">💧 饮水情况</div>
             <div class="detail-grid">
                 <div class="detail-item">
                     <div class="detail-label">饮水方式</div>
@@ -534,7 +514,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title"><i class="fas fa-toilet"></i> 🚽 如厕情况</div>
+            <div class="section-title">🚽 如厕情况</div>
             <div class="detail-grid">
                 <div class="detail-item">
                     <div class="detail-label">如厕方式</div>
@@ -560,7 +540,7 @@
         </div>
 
         <div class="section">
-            <div class="section-title"><i class="fas fa-bed"></i> 😴 午睡情况</div>
+            <div class="section-title">😴 午睡情况</div>
             <div class="detail-grid">
                 <div class="detail-item">
                     <div class="detail-label">午睡情况</div>
@@ -574,19 +554,11 @@
                     <div class="detail-label">入睡时长</div>
                     <div class="detail-value" id="nap-duration">少于半小时</div>
                 </div>
-                <div class="detail-item">
-                    <div class="detail-label">午睡详情</div>
-                    <div class="detail-value">
-                        <div class="multi-value" id="nap-details">
-                            <span class="value-tag">是否独立穿脱衣物</span>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
 
         <div class="section">
-            <div class="section-title"><i class="fas fa-gamepad"></i> 🎮 游戏活动</div>
+            <div class="section-title">🎮 游戏活动</div>
             <div class="detail-item">
                 <div class="detail-label">活动参与情况</div>
                 <div class="detail-value" id="game-activity">独自参与</div>
@@ -594,7 +566,7 @@
         </div>
 
         <div class="buttons">
-            <button class="btn btn-primary" id="saveImageBtn"><i class="fas fa-camera"></i> 📸 保存为图片</button>
+            <button class="btn btn-primary" id="saveImageBtn">📸 保存为图片</button>
         </div>
 
         <div class="footer">
@@ -692,28 +664,90 @@
             }
         }
 
+        // 通用：将canvas保存为JPEG
+        function saveCanvasAsJpeg(canvas, filename) {
+            try {
+                if (canvas.toBlob) {
+                    canvas.toBlob(function(blob) {
+                        if (!blob) {
+                            // 回退到dataURL（某些环境下toBlob返回null）
+                            try {
+                                const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
+                                const link = document.createElement('a');
+                                link.href = dataUrl;
+                                link.download = filename;
+                                document.body.appendChild(link);
+                                link.click();
+                                document.body.removeChild(link);
+                            } catch (e) {
+                                console.error('dataURL 回退失败:', e);
+                                alert('图片生成失败，请尝试截图保存。');
+                            }
+                            return;
+                        }
+                        const url = URL.createObjectURL(blob);
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.download = filename;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        setTimeout(() => URL.revokeObjectURL(url), 1000);
+                    }, 'image/jpeg', 0.92);
+                } else {
+                    try {
+                        const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
+                        const link = document.createElement('a');
+                        link.href = dataUrl;
+                        link.download = filename;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    } catch (e) {
+                        console.error('dataURL 生成失败:', e);
+                        alert('图片生成失败，请尝试截图保存。');
+                    }
+                }
+            } catch (err) {
+                console.error('保存图片失败(将尝试dataURL回退):', err);
+                try {
+                    const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
+                    const link = document.createElement('a');
+                    link.href = dataUrl;
+                    link.download = filename;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                } catch (e) {
+                    console.error('最终回退失败:', e);
+                    alert('图片生成失败，请尝试截图保存。');
+                }
+            }
+        }
+
         // 保存为图片按钮事件
         document.getElementById('saveImageBtn').addEventListener('click', function() {
-            // 显示加载指示器
-            document.getElementById('loader').style.display = 'block';
-            
-            // 使用html2canvas将表单转换为图片
-            html2canvas(document.getElementById('record-container')).then(function(canvas) {
-                // 创建图片链接
-                const imgData = canvas.toDataURL('image/png');
-                
-                // 创建下载链接
-                const link = document.createElement('a');
-                link.href = imgData;
-                link.download = `幼儿记录_${document.getElementById('child-name').textContent}_${document.getElementById('record-date').textContent}.png`;
-                
-                // 模拟点击下载
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                
-                // 隐藏加载指示器
-                document.getElementById('loader').style.display = 'none';
+            const loader = document.getElementById('loader');
+            loader.style.display = 'block';
+            const node = document.getElementById('record-container');
+            html2canvas(node, {
+                backgroundColor: '#ffffff',
+                scale: Math.max(2, window.devicePixelRatio || 1),
+                useCORS: true,
+                allowTaint: false,
+                foreignObjectRendering: false,
+                imageTimeout: 0,
+                logging: false,
+                windowWidth: node.scrollWidth,
+                windowHeight: node.scrollHeight
+            }).then(function(canvas) {
+                const filename = `幼儿记录_${document.getElementById('child-name').textContent}_${document.getElementById('record-date').textContent}.jpg`;
+                saveCanvasAsJpeg(canvas, filename);
+            }).catch(function(err){
+                console.error('生成图片失败:', err);
+                alert('生成图片失败，请尝试截图保存。');
+            }).finally(function(){
+                loader.style.display = 'none';
             });
         });
 
@@ -739,65 +773,96 @@
                 document.getElementById('class').textContent = data.class;
                 document.getElementById('record-date').textContent = data.recordDate;
                 
-                // 渲染多选数据
-                function renderMultiValue(elementId, values) {
+                // 渲染：兼容字符串或数组
+                function renderValueTags(elementId, valueOrArray) {
                     const container = document.getElementById(elementId);
                     container.innerHTML = '';
-                    if (values && values.length > 0) {
-                        values.forEach(value => {
-                            const tag = document.createElement('span');
-                            tag.className = 'value-tag';
-                            tag.textContent = value;
-                            container.appendChild(tag);
-                        });
+
+                    if (Array.isArray(valueOrArray)) {
+                        if (valueOrArray.length > 0) {
+                            valueOrArray.forEach(value => {
+                                const tag = document.createElement('span');
+                                tag.className = 'value-tag';
+                                tag.textContent = value;
+                                container.appendChild(tag);
+                            });
+                        } else {
+                            container.innerHTML = '<span class="value-tag">无记录</span>';
+                        }
+                    } else if (typeof valueOrArray === 'string' && valueOrArray.trim()) {
+                        const tag = document.createElement('span');
+                        tag.className = 'value-tag';
+                        tag.textContent = valueOrArray;
+                        container.appendChild(tag);
                     } else {
                         container.innerHTML = '<span class="value-tag">无记录</span>';
                     }
                 }
                 
-                // 渲染各字段数据
-                renderMultiValue('separation', data.separation);
-                renderMultiValue('mood', data.mood);
-                renderMultiValue('breakfast-type', data.breakfastType);
-                renderMultiValue('breakfast-amount', data.breakfastAmount);
+                // 渲染各字段数据（兼容 index.html 的数据结构）
+                // 入园情况已移除，无需渲染 separation/mood
+
+                renderValueTags('breakfast-type', data.breakfastType);
+                renderValueTags('breakfast-amount', data.breakfastAmount);
+
                 document.getElementById('water-type').textContent = data.waterType || '无记录';
                 document.getElementById('water-count').textContent = data.waterCount || '无记录';
+                const waterCountItem = document.getElementById('water-count') && document.getElementById('water-count').closest('.detail-item');
+                if (waterCountItem) {
+                    waterCountItem.style.display = (data.waterType && data.waterType !== '拒绝喝水') ? '' : 'none';
+                }
+
                 document.getElementById('toilet-type').textContent = data.toiletType || '无记录';
                 document.getElementById('bowel-movement').textContent = data.bowelMovement || '无记录';
-                document.getElementById('bowel-count').textContent = data.bowelCount || '无记录';
-                renderMultiValue('washing', data.washing);
-                renderMultiValue('lunch-type', data.lunchType);
-                renderMultiValue('lunch-amount', data.lunchAmount);
-                renderMultiValue('nap', data.nap);
+                const hadBowelMovement = data.bowelMovement === '有';
+                document.getElementById('bowel-count').textContent = hadBowelMovement ? (data.bowelCount || '无记录') : '无';
+                const bowelCountItem = document.getElementById('bowel-count') && document.getElementById('bowel-count').closest('.detail-item');
+                if (bowelCountItem) {
+                    bowelCountItem.style.display = hadBowelMovement ? '' : 'none';
+                }
+
+                renderValueTags('washing', data.washing);
+
+                renderValueTags('lunch-type', data.lunchType);
+                renderValueTags('lunch-amount', data.lunchAmount);
+
+                renderValueTags('nap', data.nap);
                 document.getElementById('nap-duration').textContent = data.napDuration || '无记录';
-                renderMultiValue('nap-details', data.napDetails);
-                renderMultiValue('snack-type', data.snackType);
-                renderMultiValue('snack-amount', data.snackAmount);
+                // 午睡详情已移除，无需渲染 nap-details
+
+                renderValueTags('snack-type', data.snackType);
+                renderValueTags('snack-amount', data.snackAmount);
+
                 document.getElementById('game-activity').textContent = data.gameActivity || '无记录';
                 
                 // 自动生成图片
                 setTimeout(() => {
                     const loader = document.getElementById('loader');
                     loader.style.display = 'block';
-                    
-                    html2canvas(document.getElementById('record-container')).then(canvas => {
-                        const link = document.createElement('a');
-                        link.href = canvas.toDataURL('image/png');
-                        link.download = `幼儿记录_${data.childName}_${data.recordDate}.png`;
-                        document.body.appendChild(link);
-                        link.click();
-                        document.body.removeChild(link);
-                        
-                        // 可选：清理数据
-                        // localStorage.removeItem(recordId);
-                        
+                    const node = document.getElementById('record-container');
+                    html2canvas(node, {
+                        backgroundColor: '#ffffff',
+                        scale: Math.max(2, window.devicePixelRatio || 1),
+                        useCORS: true,
+                        allowTaint: false,
+                        foreignObjectRendering: false,
+                        imageTimeout: 0,
+                        logging: false,
+                        windowWidth: node.scrollWidth,
+                        windowHeight: node.scrollHeight
+                    }).then(canvas => {
+                        const filename = `幼儿记录_${data.childName}_${data.recordDate}.jpg`;
+                        saveCanvasAsJpeg(canvas, filename);
+                    }).catch(err => {
+                        console.error('自动生成图片失败:', err);
+                    }).finally(() => {
                         loader.style.display = 'none';
                     });
                 }, 2000);
                 
             } catch (e) {
                 console.error('数据处理失败:', e);
-                alert('记录数据异常');
+                // alert('记录数据异常');
             }
         });
     </script>
